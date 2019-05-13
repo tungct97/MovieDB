@@ -40,7 +40,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), BottomNavigationView.O
     fun addFragment(tag: String?) {
         val fragment: Fragment? = supportFragmentManager.findFragmentByTag(tag)
         if (fragment != null) {
-            supportFragmentManager.beginTransaction().show(fragment).commit()
+            supportFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .show(fragment)
+                .commit()
             return
         }
         getFragment(tag)?.let {
