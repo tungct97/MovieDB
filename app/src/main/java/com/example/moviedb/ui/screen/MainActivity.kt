@@ -1,12 +1,12 @@
 package com.example.moviedb.ui.screen
 
 import android.view.MenuItem
-import android.view.View
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.example.moviedb.R
 import com.example.moviedb.databinding.ActivityMainBinding
 import com.example.moviedb.ui.base.BaseActivity
+import com.example.moviedb.ui.screen.home.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : BaseActivity<ActivityMainBinding>(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -37,11 +37,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), BottomNavigationView.O
         return fragment
     }
 
-    fun addFragment(tag: String?) {
+    fun addFragment(tag: String?, addToBackStack: Boolean = false) {
         val fragment: Fragment? = supportFragmentManager.findFragmentByTag(tag)
         if (fragment != null) {
             supportFragmentManager.beginTransaction()
-                .addToBackStack(null)
+                .apply {
+                    if (addToBackStack) {
+                        commitTransaction(tag, this, addToBackStack)
+                    }
+                }
                 .show(fragment)
                 .commit()
             return
@@ -51,6 +55,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), BottomNavigationView.O
                 addFragment(it, tag)
             }
         }
+    }
+
+    private fun commitTransaction(tag: String?, fragmentTransaction: FragmentTransaction, addToBackStack: Boolean) {
+        if (addToBackStack) fragmentTransaction.addToBackStack(tag)
+        fragmentTransaction.commit()
     }
 
     fun addFragment(fragment: Fragment, tag: String) {
