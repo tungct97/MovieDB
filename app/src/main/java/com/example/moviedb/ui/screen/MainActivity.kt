@@ -42,7 +42,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), BottomNavigationView.O
             supportFragmentManager.beginTransaction()
                 .apply {
                     if (addToBackStack) {
-                        commitTransaction(this, addToBackStack)
+                        commitTransaction(tag, this, addToBackStack)
                     }
                 }
                 .show(fragment)
@@ -56,8 +56,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), BottomNavigationView.O
         }
     }
 
-    private fun commitTransaction(fragmentTransaction: FragmentTransaction, addToBackStack: Boolean) {
-        if (addToBackStack) fragmentTransaction.addToBackStack(null)
+    private fun commitTransaction(tag: String?, fragmentTransaction: FragmentTransaction, addToBackStack: Boolean) {
+        if (addToBackStack) fragmentTransaction.addToBackStack(tag)
         fragmentTransaction.commit()
     }
 
