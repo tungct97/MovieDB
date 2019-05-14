@@ -2,6 +2,7 @@ package com.example.moviedb.ui.screen
 
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.example.moviedb.R
 import com.example.moviedb.databinding.ActivityMainBinding
 import com.example.moviedb.ui.base.BaseActivity
@@ -41,7 +42,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), BottomNavigationView.O
             supportFragmentManager.beginTransaction()
                 .apply {
                     if (addToBackStack) {
-                        this.addToBackStack(null)
+                        commitTransaction(this, addToBackStack)
                     }
                 }
                 .show(fragment)
@@ -53,6 +54,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), BottomNavigationView.O
                 addFragment(it, tag)
             }
         }
+    }
+
+    private fun commitTransaction(fragmentTransaction: FragmentTransaction, addToBackStack: Boolean) {
+        if (addToBackStack) fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
     }
 
     fun addFragment(fragment: Fragment, tag: String) {

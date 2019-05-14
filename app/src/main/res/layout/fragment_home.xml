@@ -16,7 +16,7 @@
                 android:textStyle="bold"
                 android:textSize="@dimen/sp_20"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.501"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -24,14 +24,12 @@
                 android:id="@+id/image_info"
                 android:layout_width="@dimen/dp_32"
                 android:layout_height="@dimen/dp_32"
-                android:layout_marginStart="@dimen/dp_16"
-                android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_16"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_info"
-                tools:ignore="VectorDrawableCompat"/>
-
+                tools:ignore="VectorDrawableCompat"
+                android:layout_marginLeft="@dimen/dp_16"/>
 
         <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"

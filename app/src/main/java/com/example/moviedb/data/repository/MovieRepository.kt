@@ -5,7 +5,5 @@ import com.example.moviedb.data.model.MovieResponse
 import io.reactivex.Single
 
 class MovieRepository(private val remote: MovieDataSource.Remote) : MovieDataSource.Remote {
-    override fun getMovies(page: Int): Single<MovieResponse> {
-        return remote.getMovies(page)
-    }
+    override fun getMovies(page: Int): Single<MovieResponse> = remote.getMovies(page)
 }

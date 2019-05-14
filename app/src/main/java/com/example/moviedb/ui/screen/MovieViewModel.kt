@@ -9,21 +9,20 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class MovieViewModel(private val repository: MovieRepository) : BaseViewModel() {
-    private val data: MutableLiveData<MovieResponse> by lazy {
-        MutableLiveData<MovieResponse>()
-    }
+    private val data = MutableLiveData<MovieResponse>()
+    val message = MutableLiveData<String>()
 
     fun getMovies(page: Int): LiveData<MovieResponse> {
-        lanchDisposable {
+        lanchDisposable(
             repository.getMovies(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     data.value = it
                 }, {
-                    data.value = null
+                    message.value = it.message
                 })
-        }
+        )
         return data
     }
 }

@@ -23,7 +23,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewmodel.getMovies(1).observe(this, Observer<MovieResponse> {
+        viewmodel.getMovies(1).observe(viewLifecycleOwner, Observer<MovieResponse> {
 
         })
     }

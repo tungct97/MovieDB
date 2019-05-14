@@ -6,7 +6,5 @@ import com.example.moviedb.data.source.api.ApiService
 import io.reactivex.Single
 
 class MovieRemoteDataSource(private val apiService: ApiService) : MovieDataSource.Remote {
-    override fun getMovies(page: Int): Single<MovieResponse> {
-        return apiService.getMovies(page)
-    }
+    override fun getMovies(page: Int): Single<MovieResponse> = apiService.getMovies(page)
 }
