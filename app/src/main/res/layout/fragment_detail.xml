@@ -15,30 +15,32 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView3"
-            imageSrc="@{viewmodel.pathImage}"
-            android:layout_width="match_parent"
+            android:id="@+id/image_movie"
+            imageSrc="@{viewmodel.movies.backdropPath}"
+            android:layout_width="0dp"
             android:layout_height="@dimen/dp_250"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_title"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_8"
             android:layout_marginLeft="@dimen/dp_8"
             android:layout_marginTop="@dimen/dp_8"
-            android:text="@{viewmodel.title}"
+            android:text="@{viewmodel.movies.title}"
             android:textSize="@dimen/sp_20"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+            app:layout_constraintTop_toBottomOf="@+id/image_movie" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
 
             android:id="@+id/constraintLayout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_16"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +64,7 @@
                 android:layout_marginStart="@dimen/dp_16"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_8"
-                android:text="@{String.valueOf(viewmodel.voteCount)}"
+                android:text="@{String.valueOf(viewmodel.movies.voteCount)}"
                 android:textStyle="italic"
                 app:layout_constraintStart_toEndOf="@+id/image_vote"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -92,7 +94,7 @@
                 android:layout_marginStart="@dimen/dp_16"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_8"
-                android:text="@{viewmodel.releaseDate}"
+                android:text="@{viewmodel.movies.releaseDate}"
                 android:textStyle="italic"
                 app:layout_constraintStart_toEndOf="@+id/image_release"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -116,7 +118,7 @@
                 app:layout_constraintGuide_percent="0.6" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/text_heart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_16"
@@ -134,7 +136,7 @@
             android:layout_marginStart="@dimen/dp_8"
             android:layout_marginLeft="@dimen/dp_8"
             android:layout_marginTop="@dimen/dp_16"
-            android:text="@{viewmodel.overview}"
+            android:text="@{viewmodel.movies.overview}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
