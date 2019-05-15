@@ -16,7 +16,7 @@ class HomeAdapter(var listener: (Movie) -> Unit) :
         }
 
         override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-            return oldItem == newItem
+            return oldItem.title == newItem.title && oldItem.posterPath == newItem.posterPath
         }
     }) {
     override fun bind(binding: ItemMovieBinding, item: Movie) {

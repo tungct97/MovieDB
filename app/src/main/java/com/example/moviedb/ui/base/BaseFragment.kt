@@ -14,13 +14,16 @@ import com.example.moviedb.R
 abstract class BaseFragment<ViewBinding : ViewDataBinding> : Fragment() {
     lateinit var viewBinding: ViewBinding
 
-    @get:LayoutRes
     abstract val layoutId: Int
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewBinding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-        initData(viewBinding)
         return viewBinding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        initData(viewBinding)
     }
 
     abstract fun initData(view: ViewBinding)

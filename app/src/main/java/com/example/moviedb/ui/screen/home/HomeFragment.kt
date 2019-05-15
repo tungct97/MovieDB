@@ -1,8 +1,7 @@
 package com.example.moviedb.ui.screen.home
 
-import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.moviedb.R
 import com.example.moviedb.data.model.Movie
@@ -12,6 +11,7 @@ import com.example.moviedb.ui.base.BaseFragment
 import com.example.moviedb.ui.screen.MainActivity
 import com.example.moviedb.ui.screen.MovieViewModel
 import com.example.moviedb.ui.screen.detail.DetailFragment
+import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
@@ -29,14 +29,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun initData(view: FragmentHomeBinding) {
         homeAdapter = HomeAdapter(::listener)
-        getData()
         initRecycler(view)
+        getData()
+
     }
 
     private fun initRecycler(view: FragmentHomeBinding) {
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        view.recyclerMovie.layoutManager = staggeredGridLayoutManager
-        view.recyclerMovie.adapter = homeAdapter
+        recycler_movie?.apply {
+            layoutManager = staggeredGridLayoutManager
+            adapter = homeAdapter
+        }
     }
 
     private fun getData() {
