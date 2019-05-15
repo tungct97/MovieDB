@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.moviedb.R
 import com.example.moviedb.databinding.ActivityMainBinding
 import com.example.moviedb.ui.base.BaseActivity
+import com.example.moviedb.ui.screen.home.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : BaseActivity<ActivityMainBinding>(), BottomNavigationView.OnNavigationItemSelectedListener {

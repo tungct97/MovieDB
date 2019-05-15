@@ -5,6 +5,9 @@ import com.example.moviedb.databinding.FragmentFavouriteBinding
 import com.example.moviedb.ui.base.BaseFragment
 
 class FavouriteFragment : BaseFragment<FragmentFavouriteBinding>() {
+    override fun initData(view: FragmentFavouriteBinding) {
+    }
+
     companion object {
         const val TAG = "FAVOURITE_FRAGMENT"
 
