@@ -49,7 +49,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun listener(movie: Movie) {
-        val detail = DetailFragment.newInstance()
+        val detail = DetailFragment.newInstance(movie)
         if (activity is MainActivity)
             (activity as MainActivity).addFragment(detail, DetailFragment.TAG)
     }

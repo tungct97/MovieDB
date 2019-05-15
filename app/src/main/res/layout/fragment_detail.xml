@@ -1,13 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
 
+        <variable
+            name="viewmodel"
+            type="com.example.moviedb.ui.screen.detail.DetailViewModel" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:orientation="vertical"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/image_movie"
+            imageSrc="@{viewmodel.movies.backdropPath}"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_250"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_8"
+            android:text="@{viewmodel.movies.title}"
+            android:textSize="@dimen/sp_20"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_movie" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+
+            android:id="@+id/constraintLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_title">
+
+            <ImageView
+                android:id="@+id/image_vote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_8"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_8"
+                android:src="@drawable/ic_like"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_vote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_8"
+                android:text="@{String.valueOf(viewmodel.movies.voteCount)}"
+                android:textStyle="italic"
+                app:layout_constraintStart_toEndOf="@+id/image_vote"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/image_release"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_8"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_8"
+                android:src="@drawable/ic_release"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.3" />
+
+            <TextView
+                android:id="@+id/text_release"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_8"
+                android:text="@{viewmodel.movies.releaseDate}"
+                android:textStyle="italic"
+                app:layout_constraintStart_toEndOf="@+id/image_release"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/image_heart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_8"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_8"
+                android:src="@drawable/ic_unheart"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.6" />
+
+            <TextView
+                android:id="@+id/text_heart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_8"
+                android:text="@string/title_like"
+                app:layout_constraintStart_toEndOf="@+id/image_heart"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/text_overview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_16"
+            android:text="@{viewmodel.movies.overview}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
