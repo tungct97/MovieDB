@@ -10,17 +10,7 @@ import com.example.moviedb.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_detail.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DetailFragment : BaseFragment<FragmentDetailBinding>(), View.OnClickListener {
-
-    override fun onClick(v: View?) {
-        if (viewModel.favourite.value == false) {
-            viewModel.insertMovie(movie)
-            viewModel.favourite.value = true
-        } else {
-            viewModel.deleteMovie(movie)
-            viewModel.favourite.value = false
-        }
-    }
+class DetailFragment : BaseFragment<FragmentDetailBinding>() {
 
     companion object {
         const val ARGUMENT_MOVIE = "ARGUMENT_MOVIE"
@@ -40,16 +30,9 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(), View.OnClickListen
     override val layoutId: Int = R.layout.fragment_detail
 
     override fun initData(view: FragmentDetailBinding) {
-        image_heart.setOnClickListener(this)
         movie = arguments?.getParcelable(ARGUMENT_MOVIE) as Movie
         view.viewmodel = viewModel.apply {
             loadData(movie)
         }
-        viewModel.favourite.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                false -> image_heart.setImageResource(R.drawable.ic_unheart)
-                true -> image_heart.setImageResource(R.drawable.ic_heart)
-            }
-        })
     }
 }

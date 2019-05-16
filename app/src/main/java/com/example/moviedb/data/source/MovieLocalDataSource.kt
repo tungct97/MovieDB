@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.example.moviedb.data.MovieDataSource
 import com.example.moviedb.data.model.Movie
 import com.example.moviedb.data.source.sql.MovieDAO
+import io.reactivex.Completable
 import io.reactivex.Single
 
 class MovieLocalDataSource(val movieDao: MovieDAO) : MovieDataSource.Local {
@@ -11,11 +12,9 @@ class MovieLocalDataSource(val movieDao: MovieDAO) : MovieDataSource.Local {
 
     override fun getMovies(): LiveData<List<Movie>> = movieDao.getMovies()
 
-    override fun deleteMovie(movie: Movie) {
-        movieDao.deleteMovie(movie)
-    }
+    override fun deleteMovie(movie: Movie): Completable = movieDao.deleteMovie(movie)
 
-    override fun insertMovie(movie: Movie) {
-        movieDao.insertMovie(movie)
-    }
+
+    override fun insertMovie(movie: Movie): Completable = movieDao.insertMovie(movie)
+
 }

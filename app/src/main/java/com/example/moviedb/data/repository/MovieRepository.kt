@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.example.moviedb.data.MovieDataSource
 import com.example.moviedb.data.model.Movie
 import com.example.moviedb.data.model.MovieResponse
+import io.reactivex.Completable
 import io.reactivex.Single
 
 class MovieRepository(
@@ -16,13 +17,10 @@ class MovieRepository(
     override fun getMovies(): LiveData<List<Movie>> = local.getMovies()
 
 
-    override fun deleteMovie(movie: Movie) {
-        local.deleteMovie(movie)
-    }
+    override fun deleteMovie(movie: Movie): Completable = local.deleteMovie(movie)
 
-    override fun insertMovie(movie: Movie) {
-        local.insertMovie(movie)
-    }
+
+    override fun insertMovie(movie: Movie): Completable = local.insertMovie(movie)
 
     override fun getMovies(page: Int): Single<MovieResponse> = remote.getMovies(page)
 }

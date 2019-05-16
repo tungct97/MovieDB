@@ -12,9 +12,9 @@ interface MovieDataSource {
     }
 
     interface Local {
-        fun insertMovie(movie: Movie)
+        fun insertMovie(movie: Movie): Completable
 
-        fun deleteMovie(movie: Movie)
+        fun deleteMovie(movie: Movie): Completable
 
         fun getMovies(): LiveData<List<Movie>>
 

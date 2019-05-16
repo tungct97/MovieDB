@@ -34,30 +34,41 @@ class DetailViewModel(val repository: MovieRepository) : BaseViewModel() {
 
     fun insertMovie(movie: Movie) {
         val disposable =
-            Single.create<Boolean> {
-                repository.insertMovie(movie)
-                it.onSuccess(true)
-            }
+            repository.insertMovie(movie)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(
                     Schedulers.io()
-                ).subscribe()
+                ).subscribe({
+                    favourite.value = true
+
+                }, {
+                    favourite.value = false
+                })
         lanchDisposable(disposable)
     }
 
     fun deleteMovie(movie: Movie) {
-        val disposable =
-            Single.create<Boolean> {
-                repository.deleteMovie(movie)
-                it.onSuccess(true)
-            }.observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(
-                    Schedulers.io()
-                ).subscribe()
+        val disposable = repository.deleteMovie(movie)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(
+                Schedulers.io()
+            ).subscribe({
+                favourite.value = false
+            }, {
+                favourite.value = true
+            })
         lanchDisposable(disposable)
     }
 
     fun getMovies(): LiveData<List<Movie>> {
         return repository.getMovies()
+    }
+
+    fun onClickFavourite() {
+        if (favourite.value == false) {
+            insertMovie(movies.value!!)
+        } else {
+            deleteMovie(movies.value!!)
+        }
     }
 }
