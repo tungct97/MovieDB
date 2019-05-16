@@ -10,6 +10,7 @@ import io.reactivex.schedulers.Schedulers
 
 class MovieViewModel(private val repository: MovieRepository) : BaseViewModel() {
     private val data = MutableLiveData<MovieResponse>()
+    val reload = MutableLiveData<Boolean>().apply { value = true }
     val message = MutableLiveData<String>()
 
     fun getMovies(page: Int): LiveData<MovieResponse> {
@@ -18,8 +19,10 @@ class MovieViewModel(private val repository: MovieRepository) : BaseViewModel() 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    reload.value = false
                     data.value = it
                 }, {
+                    reload.value = false
                     message.value = it.message
                 })
         )
