@@ -1,5 +1,7 @@
 package com.example.moviedb.ui.screen
 
+import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -9,12 +11,14 @@ import com.example.moviedb.ui.base.BaseActivity
 import com.example.moviedb.ui.screen.favourite.FavouriteFragment
 import com.example.moviedb.ui.screen.home.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity<ActivityMainBinding>(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     override val layoutId: Int = R.layout.activity_main
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        supportFragmentManager.popBackStack()
         var selectedTag: String? = null
         when (item.getItemId()) {
             R.id.nav_home -> selectedTag = HomeFragment.TAG
@@ -22,20 +26,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), BottomNavigationView.O
         }
         addFragment(selectedTag)
         return true
-    }
-
-    override fun iniView(view: ActivityMainBinding) {
-        view.bottomNavigationView.setOnNavigationItemSelectedListener(this)
-        addFragment(HomeFragment.TAG)
-    }
-
-    fun getFragment(tag: String?): Fragment? {
-        var fragment: Fragment? = null
-        when (tag) {
-            HomeFragment.TAG -> fragment = HomeFragment.newInstance()
-            FavouriteFragment.TAG -> fragment = FavouriteFragment.newInstance()
-        }
-        return fragment
     }
 
     fun addFragment(tag: String?, addToBackStack: Boolean = false) {
@@ -58,6 +48,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), BottomNavigationView.O
         }
     }
 
+
+    override fun iniView(view: ActivityMainBinding, savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            addFragment(HomeFragment.TAG)
+        }
+        bottomNavigationView.setOnNavigationItemSelectedListener(this)
+    }
+
+    fun getFragment(tag: String?): Fragment? {
+        var fragment: Fragment? = null
+        when (tag) {
+            HomeFragment.TAG -> fragment = HomeFragment.newInstance()
+            FavouriteFragment.TAG -> fragment = FavouriteFragment.newInstance()
+        }
+        return fragment
+    }
+
+
     private fun commitTransaction(tag: String?, fragmentTransaction: FragmentTransaction, addToBackStack: Boolean) {
         if (addToBackStack) fragmentTransaction.addToBackStack(tag)
         fragmentTransaction.commit()
@@ -65,5 +73,25 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), BottomNavigationView.O
 
     fun addFragment(fragment: Fragment, tag: String) {
         supportFragmentManager.beginTransaction().replace(R.id.frameLayout, fragment, tag).commit()
+    }
+
+    fun addChildFragment(
+        fragment: Fragment, tag: String?, addToBackStack: Boolean = false
+    ) {
+        supportFragmentManager.beginTransaction().replace(
+            R.id.frameLayout, fragment, tag
+        ).apply {
+            if (addToBackStack) {
+                commitTransaction(tag, this, addToBackStack)
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val count = supportFragmentManager.backStackEntryCount
+        if (count > 0) {
+            supportFragmentManager.popBackStack()
+        }
     }
 }

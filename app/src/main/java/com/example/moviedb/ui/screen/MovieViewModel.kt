@@ -1,9 +1,11 @@
 package com.example.moviedb.ui.screen
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.moviedb.data.model.Movie
 import com.example.moviedb.data.repository.MovieRepository
 import com.example.moviedb.ui.base.BaseViewModel
+import com.example.moviedb.ui.base.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -11,10 +13,11 @@ class MovieViewModel(private val repository: MovieRepository) : BaseViewModel() 
     val movies: MutableLiveData<MutableList<Movie>> = MutableLiveData()
     val loadmore = MutableLiveData<Boolean>().apply { value = false }
     val fistLoading = MutableLiveData<Boolean>().apply { value = false }
-    val message = MutableLiveData<String>()
+    val message = SingleLiveEvent<Boolean>()
     var page: Int = 1
 
     fun getMovies() {
+        page = 1
         fistLoading.value = true
         lanchDisposable(
             repository.getMovies(page)
@@ -24,10 +27,10 @@ class MovieViewModel(private val repository: MovieRepository) : BaseViewModel() 
                     fistLoading.value = false
                 })
                 .subscribe({
-                    movies.value = it.results?.toMutableList()
                     page++
+                    movies.value = it.results?.toMutableList()
                 }, {
-                    message.value = it.message
+                    message.value = true
                 })
         )
     }
@@ -38,10 +41,13 @@ class MovieViewModel(private val repository: MovieRepository) : BaseViewModel() 
             repository.getMovies(1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+                .doAfterSuccess {
+                    page = 1
+                    page++
+                }.subscribe({
                     movies.value = it.results?.toMutableList()
                 }, {
-                    message.value = it.message
+                    message.value = true
                 })
         )
     }
@@ -53,14 +59,13 @@ class MovieViewModel(private val repository: MovieRepository) : BaseViewModel() 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate({
-                        loadmore.value = false
+                    loadmore.value = false
                 })
                 .subscribe({
-                    page++
                     updateMovies(it.results!!.toMutableList())
-
+                    page++
                 }, {
-                    message.value = it.message
+                    message.value = true
                 })
         )
     }
