@@ -16,8 +16,8 @@ abstract class BaseActivity<ViewBinding : ViewDataBinding> : AppCompatActivity()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = DataBindingUtil.setContentView(this, layoutId)
-        iniView(viewBinding)
+        iniView(viewBinding, savedInstanceState)
     }
 
-    abstract fun iniView(view : ViewBinding)
+    abstract fun iniView(view: ViewBinding, savedInstanceState: Bundle?)
 }

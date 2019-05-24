@@ -1,8 +1,14 @@
 package com.example.moviedb.ui.screen.home
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.util.Log
-import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.moviedb.R
@@ -22,20 +28,35 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), SwipeRefreshLayout.OnR
     private val onEnlessScrollListener = EnlessScrollListener(::onLoadMore)
 
     private fun onLoadMore() {
+        if (isNetworkAvailable() == false) {
+            Toast.makeText(activity, "Bạn không có kết nối mạng", Toast.LENGTH_SHORT).show()
+            return
+        }
         if (viewModel.loadmore.value == false) {
             viewModel.reloadingMovie()
         }
+
     }
 
     companion object {
         const val TAG = "HOME_FRAGMENT"
 
         fun newInstance() = HomeFragment()
+
     }
 
     override val layoutId: Int = R.layout.fragment_home
 
     override fun initData(view: FragmentHomeBinding) {
+        viewModel.apply {
+            message.observe(viewLifecycleOwner, Observer {
+                when(it) {
+                    true -> {
+                        Toast.makeText(context, "Loi ket noi", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+        }
         viewBinding.viewModel = viewModel
         viewModel.movies.observe(viewLifecycleOwner, Observer {
             homeAdapter.submitList(it)
@@ -55,18 +76,37 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), SwipeRefreshLayout.OnR
         }
     }
 
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager = activity?.getSystemService(Context.CONNECTIVITY_SERVICE)
+        return if (connectivityManager is ConnectivityManager) {
+            val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+            networkInfo?.isConnected ?: false
+        } else false
+    }
+
     private fun getData() {
         viewModel.getMovies()
     }
 
     private fun listener(movie: Movie) {
         val detail = DetailFragment.newInstance(movie)
-        if (activity is MainActivity)
-            (activity as MainActivity).addFragment(detail, DetailFragment.TAG)
+        if (activity is MainActivity) {
+            (activity as MainActivity).addChildFragment(detail, DetailFragment.TAG, true)
+        }
     }
 
     override fun onRefresh() {
+        if (isNetworkAvailable() == false) {
+            Toast.makeText(activity, "Bạn không có kết nối mạng", Toast.LENGTH_SHORT).show()
+            refresh_layout.isRefreshing = false
+            return
+        }
         viewModel.refreshLayout()
         refresh_layout.isRefreshing = false
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.onCleared()
     }
 }
